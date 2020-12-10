@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String felhnev = txtJelszo.getText().toString();
                 txtJelszo.setText(adatbazis.NevEllen(felhnev)+ "");
-//                if ()){
+//                if (Adatmodositas())){
 //                    Intent bejelentkezes = new Intent(getApplicationContext(), LoggedInActivity.class);
 //                    startActivity(bejelentkezes);
 //                    finish();
