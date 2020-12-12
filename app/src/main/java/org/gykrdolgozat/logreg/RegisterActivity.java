@@ -165,19 +165,21 @@ public class RegisterActivity extends AppCompatActivity {
             if (adatbazis.EmailCheck(email) || !email.contains("@")) {
                 editTextemail.setTextColor(Color.rgb(255, 0, 0));
                 imageViewFormation.setVisibility(View.VISIBLE);
-
                 imageViewFormation.startAnimation(bounce);
             } else {
                 editTextemail.setTextColor(Color.rgb(0, 255, 0));
                 imageViewFormation.clearAnimation();
+                imageViewFormation.setVisibility(View.GONE);
             }
             if (adatbazis.FelhnevCheck(felhnev)) {
                 editTextfelhnev.setTextColor(Color.rgb(255, 0, 0));
+                imageViewFrameAnim.setVisibility(View.VISIBLE);
                 ((AnimationDrawable) imageViewFrameAnim.getBackground()).start();
+
 
             } else {
                 editTextfelhnev.setTextColor(Color.rgb(0, 255, 0));
-                ((AnimationDrawable) imageViewFrameAnim.getBackground()).stop();
+                imageViewFrameAnim.setVisibility(View.GONE);
             }
         }
     };
