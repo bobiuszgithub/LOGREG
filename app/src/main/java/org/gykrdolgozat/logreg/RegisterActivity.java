@@ -79,8 +79,16 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-
-        if (!teljesnev.contains(" "))
+        char[] tnev = teljesnev.toCharArray();
+        Integer spacek = 0;
+        int index = 0;
+        for (int i = 0; i < tnev.length; i++) {
+            if (tnev[i] == ' '){
+                spacek++;
+                index = i+1;
+            }
+        }
+        if (!spacek.equals(1) || !Character.isUpperCase(teljesnev.codePointAt(0)) || !Character.isUpperCase(teljesnev.codePointAt(index)))
         {
             Toast.makeText(this, "Helytelen Teljes név", Toast.LENGTH_LONG).show();
             return;
@@ -90,6 +98,11 @@ public class RegisterActivity extends AppCompatActivity {
         if (emailcheck) {
             Toast.makeText(this, "foglalt E-mail", Toast.LENGTH_LONG).show();
             return;
+        }
+        if (!email.contains("@")){
+            Toast.makeText(this, "Hibás E-mail formátum", Toast.LENGTH_LONG).show();
+            return;
+
         }
         else{
             boolean sikeres = adatbazis.adatFelvetel(email, felhnev, jelszo, teljesnev);
