@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:hint="Jelszó"
+        android:inputType="textPassword"
         android:id="@+id/edittext_main_jelszo"
         />
 

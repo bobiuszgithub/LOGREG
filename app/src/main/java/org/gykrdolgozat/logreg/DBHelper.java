@@ -56,30 +56,29 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public Cursor adatLekerdezes() {
+    public Cursor EgyLeKerdezes(String teljesn) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(FELHASZNALO_TABLE, new String[]{COL_ID, COL_EMAIL, COL_FELHNEV, COL_JELSZO, COL_TELJESNEV}, null, null, null, null, null);
+        return db.rawQuery("SELECT " + COL_TELJESNEV + " FROM " + FELHASZNALO_TABLE + " WHERE " + COL_FELHNEV + " = ? OR " + COL_EMAIL + " = ? ", new String[]{teljesn, teljesn});
     }
 
-
-    public boolean NevEllen(String felhemail) {
-        SQLiteDatabase db= this.getReadableDatabase();
-        String selection = "felhnev LIKE ?";
-        String[] selectionArgs = {felhemail};
-        Cursor result = db.query(FELHASZNALO_TABLE,new String[]{COL_ID,COL_EMAIL,COL_FELHNEV,COL_JELSZO, COL_TELJESNEV},selection,selectionArgs,null,null,null,null);
+    public boolean Logincheck(String felhnev, String jelszo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery(" SELECT COUNT(*) FROM " + FELHASZNALO_TABLE + " WHERE  (" + COL_FELHNEV + " = ? OR " + COL_EMAIL + " = ?) AND " + COL_JELSZO + " = ? ", new String[]{felhnev, felhnev, jelszo});
         result.moveToFirst();
-        return (result.getCount() == 0);
+        return result.getInt(0) >= 1;
     }
-//    public boolean EmailEllen(String felhemail) {
-//        SQLiteDatabase db= this.getReadableDatabase();
-//        Cursor resul = db.rawQuery("SELECT COUNT(*) FROM "+FELHASZNALO_TABLE+" WHERE "+ COL_EMAIL +" LIKE ? ",new String[]{felhemail});
-//        resul.moveToFirst();
-//        return (resul.getCount() == 1);
-//    }
-//    public boolean JelszoEllen(String felhemail) {
-//        SQLiteDatabase db= this.getReadableDatabase();
-//        Cursor resul = db.rawQuery("SELECT COUNT(*) FROM "+FELHASZNALO_TABLE+" WHERE "+ COL_JELSZO +" LIKE ? ",new String[]{felhemail});
-//        resul.moveToFirst();
-//        return (resul.getCount() == 1);
-//    }
+
+    public boolean EmailCheck(String felhemail) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery(" SELECT COUNT(*) FROM " + FELHASZNALO_TABLE + " WHERE  (" + COL_EMAIL + " = ? OR " + COL_EMAIL + " = ?)", new String[]{felhemail});
+        result.moveToFirst();
+        return result.getInt(0) >= 1;
+    }
+
+    public boolean FelhnevCheck(String felhe) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery(" SELECT COUNT(*) FROM " + FELHASZNALO_TABLE + " WHERE  (" + COL_FELHNEV + " = ? )", new String[]{felhe});
+        result.moveToFirst();
+        return result.getInt(0) >= 1;
+    }
 }

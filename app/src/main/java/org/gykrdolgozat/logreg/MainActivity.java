@@ -27,33 +27,37 @@ public class MainActivity extends AppCompatActivity {
         onClickLisener();
     }
 
-//    private boolean Adatmodositas() {
-//
-//        String jelszo = txtJelszo.getText().toString();
-//        boolean bennevan = true;
-//
-//        if (!adatbazis.NevEllen(felhnev)) {
-//            Toast.makeText(this, "van ilyen Felhasználó", Toast.LENGTH_SHORT).show();
-//        }else{
-//            Toast.makeText(this, "nincs ilyen Felhasználó", Toast.LENGTH_SHORT).show();
-//            bennevan = false;
-//        }
-//
-//        return bennevan;
-//    }
+
+    private void belepes() {
+        String nev = txtFelhasznalo.getText().toString().trim();
+        String jelsz = txtJelszo.getText().toString().trim();
+
+        if (nev.isEmpty() || jelsz.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Nem adott meg nevet vagy jelszót.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        boolean felhell = adatbazis.Logincheck(nev, jelsz);
+
+        if (felhell) {
+            String datrt = txtFelhasznalo.getText().toString().trim();
+            Intent passdat_int = new Intent(MainActivity.this, LoggedInActivity.class);
+            passdat_int.putExtra("data1", datrt);
+            startActivity(passdat_int);
+            finish();
+        } else {
+            Toast.makeText(MainActivity.this, "Hibás User vagy jelszó.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+    }
 
     private void onClickLisener() {
         btnBejelentkezes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String felhnev = txtJelszo.getText().toString();
-                txtJelszo.setText(adatbazis.NevEllen(felhnev)+ "");
-//                if (Adatmodositas())){
-//                    Intent bejelentkezes = new Intent(getApplicationContext(), LoggedInActivity.class);
-//                    startActivity(bejelentkezes);
-//                    finish();
-//                }
-
+                belepes();
             }
         });
         btnRegisztracio.setOnClickListener(new View.OnClickListener() {
