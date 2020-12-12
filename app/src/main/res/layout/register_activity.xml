@@ -50,4 +50,12 @@
         android:layout_height="wrap_content"
         android:text="Vissza" />
 
+    <ImageView
+        android:id="@+id/frameAnim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/frame_anim" />
+    >
+
 </LinearLayout>

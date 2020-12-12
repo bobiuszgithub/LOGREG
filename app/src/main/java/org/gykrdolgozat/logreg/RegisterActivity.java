@@ -2,12 +2,14 @@ package org.gykrdolgozat.logreg;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText editTextemail, editTextfelhnev, editTextjelszo, editTextteljesnev;
     Button btnRegister, btnVissza;
     DBHelper adatbazis;
+
+    private ImageView imageViewFrameAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-
     private void adatRogzites() {
         String email = editTextemail.getText().toString().trim();
         String felhnev = editTextfelhnev.getText().toString().trim();
@@ -83,13 +86,12 @@ public class RegisterActivity extends AppCompatActivity {
         Integer spacek = 0;
         int index = 0;
         for (int i = 0; i < tnev.length; i++) {
-            if (tnev[i] == ' '){
+            if (tnev[i] == ' ') {
                 spacek++;
-                index = i+1;
+                index = i + 1;
             }
         }
-        if (!spacek.equals(1) || !Character.isUpperCase(teljesnev.codePointAt(0)) || !Character.isUpperCase(teljesnev.codePointAt(index)))
-        {
+        if (!spacek.equals(1) || !Character.isUpperCase(teljesnev.codePointAt(0)) || !Character.isUpperCase(teljesnev.codePointAt(index))) {
             Toast.makeText(this, "Helytelen Teljes név", Toast.LENGTH_LONG).show();
             return;
         }
@@ -99,12 +101,11 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "foglalt E-mail", Toast.LENGTH_LONG).show();
             return;
         }
-        if (!email.contains("@")){
+        if (!email.contains("@")) {
             Toast.makeText(this, "Hibás E-mail formátum", Toast.LENGTH_LONG).show();
             return;
 
-        }
-        else{
+        } else {
             boolean sikeres = adatbazis.adatFelvetel(email, felhnev, jelszo, teljesnev);
             if (sikeres) {
                 Toast.makeText(this, "Sikeres regisztráció", Toast.LENGTH_LONG).show();
@@ -131,7 +132,11 @@ public class RegisterActivity extends AppCompatActivity {
         editTextjelszo.addTextChangedListener(regisztraciomezok);
         editTextteljesnev.addTextChangedListener(regisztraciomezok);
 
+        imageViewFrameAnim = findViewById(R.id.frameAnim);
+
+
     }
+
     private TextWatcher regisztraciomezok = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -153,15 +158,18 @@ public class RegisterActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
             String email = editTextemail.getText().toString().trim();
             String felhnev = editTextfelhnev.getText().toString().trim();
-            if (adatbazis.EmailCheck(email) || !email.contains("@")){
-                editTextemail.setTextColor(Color.rgb(255,0,0));
-            }else{
-                editTextemail.setTextColor(Color.rgb(0,255,0));
+            if (adatbazis.EmailCheck(email) || !email.contains("@")) {
+                editTextemail.setTextColor(Color.rgb(255, 0, 0));
+            } else {
+                editTextemail.setTextColor(Color.rgb(0, 255, 0));
             }
-            if (adatbazis.FelhnevCheck(felhnev)){
-                editTextfelhnev.setTextColor(Color.rgb(255,0,0));
-            }else{
-                editTextfelhnev.setTextColor(Color.rgb(0,255,0));
+            if (adatbazis.FelhnevCheck(felhnev)) {
+                editTextfelhnev.setTextColor(Color.rgb(255, 0, 0));
+                ((AnimationDrawable) imageViewFrameAnim.getBackground()).start();
+
+            } else {
+                editTextfelhnev.setTextColor(Color.rgb(0, 255, 0));
+                ((AnimationDrawable) imageViewFrameAnim.getBackground()).stop();
             }
         }
     };
