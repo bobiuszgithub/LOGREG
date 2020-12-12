@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,9 +23,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText editTextemail, editTextfelhnev, editTextjelszo, editTextteljesnev;
     Button btnRegister, btnVissza;
+    private Animation bounce;
     DBHelper adatbazis;
 
-    private ImageView imageViewFrameAnim;
+    private ImageView imageViewFrameAnim, imageViewFormation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +134,11 @@ public class RegisterActivity extends AppCompatActivity {
         editTextfelhnev.addTextChangedListener(regisztraciomezok);
         editTextjelszo.addTextChangedListener(regisztraciomezok);
         editTextteljesnev.addTextChangedListener(regisztraciomezok);
-
+        imageViewFormation = findViewById(R.id.imageViewformation);
         imageViewFrameAnim = findViewById(R.id.frameAnim);
+        imageViewFormation.setVisibility(View.GONE);
 
-
+        bounce = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.bounce);
     }
 
     private TextWatcher regisztraciomezok = new TextWatcher() {
@@ -160,8 +164,12 @@ public class RegisterActivity extends AppCompatActivity {
             String felhnev = editTextfelhnev.getText().toString().trim();
             if (adatbazis.EmailCheck(email) || !email.contains("@")) {
                 editTextemail.setTextColor(Color.rgb(255, 0, 0));
+                imageViewFormation.setVisibility(View.VISIBLE);
+
+                imageViewFormation.startAnimation(bounce);
             } else {
                 editTextemail.setTextColor(Color.rgb(0, 255, 0));
+                imageViewFormation.clearAnimation();
             }
             if (adatbazis.FelhnevCheck(felhnev)) {
                 editTextfelhnev.setTextColor(Color.rgb(255, 0, 0));
